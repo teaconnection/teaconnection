@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tea Connection — Contactá tu local</title>
+<meta name="description" content="¿Tu pedido no salió como esperabas? Escribile directo a tu local de Tea Connection por WhatsApp.">
+<link rel="icon" href="assets/favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/favicon-48x48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+<style>
+
+  /* ============================================
+     TIPOGRAFÍA DE MARCA — Gotham
+     Bold / Black para textos principales, Book para secundarios
+     ============================================ */
+  @font-face{
+    font-family:'Gotham';
+    src:url('assets/fonts/Gotham-Book.woff2') format('woff2');
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+  }
+  @font-face{
+    font-family:'Gotham';
+    src:url('assets/fonts/Gotham-Bold.woff2') format('woff2');
+    font-weight:700;
+    font-style:normal;
+    font-display:swap;
+  }
+  @font-face{
+    font-family:'Gotham';
+    src:url('assets/fonts/Gotham-Black.woff2') format('woff2');
+    font-weight:900;
+    font-style:normal;
+    font-display:swap;
+  }
+</style>
+<style>
+
+  /* ============================================
+     TOKENS DE MARCA — Tea Connection
+     Extraídos del manual de identidad visual
+     ============================================ */
+  :root{
+    --forest: #27352F;   /* verde oscuro — texto principal / header */
+    --sage:   #85AA8F;   /* verde salvia — texto secundario */
+    --mint:   #84C095;   /* verde menta — acentos, bordes */
+    --gold:   #CC9F03;   /* mostaza — un único acento de énfasis */
+    --ink:    #151616;   /* casi negro */
+    --cream:  #FFFBEF;   /* fondo cálido */
+    --mint-tint: rgba(132,192,149,0.16);
+
+    --font: 'Gotham', -apple-system, sans-serif;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--cream);
+    color:var(--forest);
+    font-family:var(--font);
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------- Header ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px 24px 8px;
+  }
+  .mark img{
+    height:26px;
+    width:auto;
+    display:block;
+  }
+
+  .footer-wordmark{
+    height:16px;
+    width:auto;
+    display:inline-block;
+    opacity:0.85;
+    margin-bottom:10px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    max-width:560px;
+    margin:0 auto;
+    padding:36px 28px 20px;
+    text-align:center;
+    overflow:hidden;
+  }
+
+  .hero-inner{ position:relative; z-index:1; }
+
+  .hero h1{
+    font-family:var(--font);
+    font-weight:900;
+    font-size:clamp(1.7rem, 6vw, 2.5rem);
+    line-height:1.15;
+    letter-spacing:-0.01em;
+    color:var(--forest);
+    max-width:16ch;
+    margin:0 auto 16px;
+  }
+
+  .hero p{
+    font-family:var(--font);
+    font-weight:400;
+    font-size:1.05rem;
+    color:var(--forest);
+    opacity:0.85;
+    max-width:38ch;
+    margin:0 auto;
+  }
+
+  /* ---------- Buscador ---------- */
+  .search-wrap{
+    max-width:560px;
+    margin:28px auto 4px;
+    padding:0 28px;
+  }
+
+  .search-field{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    border:1.5px solid var(--mint);
+    border-radius:14px;
+    padding:13px 16px;
+  }
+
+  .search-field svg{ flex:none; opacity:0.6; }
+
+  .search-field input{
+    border:none;
+    outline:none;
+    background:transparent;
+    width:100%;
+    font-family:var(--font);
+    font-weight:400;
+    font-size:1rem;
+    color:var(--forest);
+  }
+  .search-field input::placeholder{ color:var(--sage); }
+
+  /* ---------- Listado de locales ---------- */
+  .locations{
+    max-width:560px;
+    margin:0 auto;
+    padding:24px 28px 8px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .local-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:var(--forest);
+    border:1.5px solid var(--forest);
+    border-radius:999px;
+    padding:12px 14px;
+    transition:background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .local-btn:hover{ background:var(--mint); border-color:var(--mint); }
+  .local-btn:hover .local-name{ color:var(--forest); }
+  .local-btn:active{ transform:scale(0.97); }
+
+  .local-name{
+    font-family:var(--font);
+    font-weight:700;
+    font-size:0.88rem;
+    line-height:1.25;
+    color:var(--cream);
+  }
+
+  .local-btn--pending{
+    cursor:default;
+    background:transparent;
+    border-color:var(--sage);
+  }
+  .local-btn--pending .local-name{ color:var(--sage); }
+  .local-btn--pending:hover{ background:transparent; border-color:var(--sage); }
+  .local-btn--pending:hover .local-name{ color:var(--sage); }
+
+  .local-pending{
+    display:block;
+    font-family:var(--font);
+    font-weight:400;
+    font-size:0.7rem;
+    color:var(--sage);
+  }
+
+  .no-results{
+    text-align:center;
+    color:var(--sage);
+    padding:24px 0;
+    display:none;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    text-align:center;
+    padding:36px 24px 40px;
+  }
+  footer p{
+    font-size:0.8rem;
+    font-family:var(--font);
+    font-weight:400;
+    color:var(--sage);
+  }
+
+  /* Entrada única de la hero, sin animaciones repetidas por scroll */
+  @media (prefers-reduced-motion: no-preference){
+    .hero-inner{
+      animation:rise .6s cubic-bezier(.2,.7,.3,1) both;
+    }
+    @keyframes rise{
+      from{ opacity:0; transform:translateY(10px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="mark"><img src="assets/tc-mark.png" alt="Tea Connection"></div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>¿Tu pedido no salió como esperabas?</h1>
+      <p>Escribí al local al que hiciste el pedido así podemos ayudarte:</p>
+    </div>
+  </section>
+
+  <div class="search-wrap">
+    <div class="search-field">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search" type="text" placeholder="Buscá tu local" autocomplete="off">
+    </div>
+  </div>
+
+  <section class="locations" id="locations">
+    <!-- Los botones se generan desde el array LOCATIONS más abajo -->
+  </section>
+
+  <p class="no-results" id="no-results">No encontramos ese local. Probá con otro nombre.</p>
+
+  <footer>
+    <img class="footer-wordmark" src="assets/tc-wordmark.png" alt="Tea Connection">
+    <p>2006 - 2026</p>
+  </footer>
+
+<script>
+  /* ================================================================
+     Lista de locales. Los links son directos a wa.me (formato
+     549 + número, sin 0 ni 15) — sin pasar por acortadores.
+     Si cambia el teléfono de un local, editá el valor de "wa" acá.
+     ================================================================ */
+  const LOCATIONS = [
+    { name: "Sinclair",            wa: "https://wa.me/5491162587974" },
+    { name: "Scalabrini",          wa: "https://wa.me/5491131096004" },
+    { name: "Lacroze",             wa: "https://wa.me/5491154181321" },
+    { name: "Ávalos",              wa: "https://wa.me/5491153871360" },
+    { name: "Gorostiaga",          wa: "https://wa.me/5491159128146" },
+    { name: "Vuelta de Obligado",  wa: "https://wa.me/5491152210785" },
+    { name: "Conde",               wa: "https://wa.me/5491127311979" },
+    { name: "Nordelta",            wa: "https://wa.me/5491172151834" },
+    { name: "Paunero",             wa: "https://wa.me/5491121934498" },
+    { name: "Unicenter",           wa: "https://wa.me/5491133151271" },
+    { name: "Montevideo",          wa: "https://wa.me/5491157310781" },
+    { name: "Uriburu",             wa: "https://wa.me/5491124594601" },
+    { name: "Arenales",            wa: "https://wa.me/5491124841595" },
+    { name: "Formosa",             wa: "https://wa.me/5491158999577" },
+    { name: "Libertador",          wa: "https://wa.me/5491159128148" },
+    { name: "Alto Rosario",        wa: "https://wa.me/5493413866593" },
+    { name: "Oroño",               wa: "https://wa.me/5493415945296" },
+  ];
+
+  const container = document.getElementById('locations');
+  const noResults = document.getElementById('no-results');
+
+  function render(list){
+    container.innerHTML = list.map(loc => {
+      const hasLink = !!loc.wa;
+      const tag = hasLink ? 'a' : 'div';
+      const attrs = hasLink ? `href="${loc.wa}" target="_blank" rel="noopener"` : '';
+      return `
+      <${tag} class="local-btn${hasLink ? '' : ' local-btn--pending'}" ${attrs}>
+        <span class="local-name">${loc.name}</span>
+        ${hasLink ? '' : '<span class="local-pending">Pendiente</span>'}
+      </${tag}>
+    `;
+    }).join('');
+    noResults.style.display = list.length ? 'none' : 'block';
+  }
+
+  document.getElementById('search').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    const filtered = LOCATIONS.filter(loc => loc.name.toLowerCase().includes(q));
+    render(filtered);
+  });
+
+  render(LOCATIONS);
+</script>
+
+</body>
+</html>
